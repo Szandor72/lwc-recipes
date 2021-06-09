@@ -46,7 +46,7 @@ describe('c-nav-to-record', () => {
         return Promise.resolve().then(() => {
             // Get handle to view button and fire click event
             const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button.slds-m-right_x-small'
+                'lightning-button.slds-var-m-right_x-small'
             );
             buttonEl.click();
 
@@ -84,7 +84,7 @@ describe('c-nav-to-record', () => {
         return Promise.resolve().then(() => {
             // Get handle to edit button and fire click event
             const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button:not(.slds-m-right_x-small)'
+                'lightning-button:not(.slds-var-m-right_x-small)'
             );
             // Selector for no class could also be 'lightning-button:not([class])'
 
@@ -100,5 +100,51 @@ describe('c-nav-to-record', () => {
             expect(pageReference.attributes.actionName).toBe(NAV_ACTION_NAME);
             expect(pageReference.attributes.recordId).toBe(NAV_RECORD_ID);
         });
+    });
+
+    it('shows error panel when there is an error', () => {
+        // Create initial lwc element and attach to virtual DOM
+        const element = createElement('c-nav-to-record', {
+            is: NavToRecord
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getSingleContactAdapter.error();
+
+        // Return a promise to wait for any asynchronous DOM updates. Jest
+        // will automatically wait for the Promise chain to complete before
+        // ending the test and fail the test if the promise rejects.
+        return Promise.resolve().then(() => {
+            const errorPanelEl =
+                element.shadowRoot.querySelector('c-error-panel');
+            expect(errorPanelEl).not.toBeNull();
+        });
+    });
+
+    it('is accessible when data is returned', () => {
+        // Create initial lwc element and attach to virtual DOM
+        const element = createElement('c-nav-to-record', {
+            is: NavToRecord
+        });
+        document.body.appendChild(element);
+
+        // Simulate the data sent over wire adapter to hydrate the wired property
+        getSingleContactAdapter.emit(mockGetSingleContact);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create initial lwc element and attach to virtual DOM
+        const element = createElement('c-nav-to-record', {
+            is: NavToRecord
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getSingleContactAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

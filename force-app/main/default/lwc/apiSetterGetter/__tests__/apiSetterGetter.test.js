@@ -12,16 +12,14 @@ describe('c-api-setter-getter', () => {
         document.body.appendChild(element);
 
         // Query lightning-input elements
-        const lightningInputEls = element.shadowRoot.querySelectorAll(
-            'lightning-input'
-        );
+        const lightningInputEls =
+            element.shadowRoot.querySelectorAll('lightning-input');
 
-        const todoCountPrevious = element.shadowRoot.querySelector(
-            'c-todo-list'
-        ).todos.length;
+        const todoCountPrevious =
+            element.shadowRoot.querySelector('c-todo-list').todos.length;
 
         // Select input fields for simulating user input
-        lightningInputEls.forEach(el => {
+        lightningInputEls.forEach((el) => {
             if (el.label === 'Description') {
                 el.value = TODO_DESCRIPTION;
             } else if (el.label === 'Priority') {
@@ -44,5 +42,15 @@ describe('c-api-setter-getter', () => {
             expect(todoListEl.todos[2].description).toBe(TODO_DESCRIPTION);
             expect(todoListEl.todos[2].priority).toBe(true);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-api-setter-getter', {
+            is: ApiSetterGetter
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

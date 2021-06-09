@@ -17,10 +17,9 @@ describe('c-misc-dom-query', () => {
         document.body.appendChild(element);
 
         // Query all lightning-input fields
-        const lightningInputCheckedEls = element.shadowRoot.querySelectorAll(
-            'lightning-input'
-        );
-        lightningInputCheckedEls.forEach(input => {
+        const lightningInputCheckedEls =
+            element.shadowRoot.querySelectorAll('lightning-input');
+        lightningInputCheckedEls.forEach((input) => {
             expect(input.checked).toBeFalsy();
         });
     });
@@ -33,9 +32,8 @@ describe('c-misc-dom-query', () => {
         document.body.appendChild(element);
 
         // Query all lightning-input fields
-        const lightningInputEls = element.shadowRoot.querySelectorAll(
-            'lightning-input'
-        );
+        const lightningInputEls =
+            element.shadowRoot.querySelectorAll('lightning-input');
         lightningInputEls[0].checked = true;
         lightningInputEls[0].dispatchEvent(new CustomEvent('change'));
 
@@ -69,5 +67,15 @@ describe('c-misc-dom-query', () => {
                     'Checked items: Category 1, Category 2, Category 3'
                 );
             });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-misc-dom-query', {
+            is: MiscDomQuery
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

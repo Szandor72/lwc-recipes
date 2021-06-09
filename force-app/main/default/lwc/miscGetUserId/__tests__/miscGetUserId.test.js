@@ -14,9 +14,19 @@ describe('c-misc-get-user-id', () => {
 
         // Query div element that displays user id.
         const divEl = element.shadowRoot.querySelector(
-            'div[class="slds-m-around_medium"]'
+            'div[class="slds-var-m-around_medium"]'
         );
         expect(divEl).not.toBeNull();
         expect(divEl.textContent).toBe('User Id:' + USER_ID);
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-misc-get-user-id', {
+            is: MiscGetUserId
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

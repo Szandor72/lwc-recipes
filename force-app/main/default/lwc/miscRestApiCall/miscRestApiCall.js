@@ -17,18 +17,20 @@ export default class MiscRestCall extends LightningElement {
         // The Fetch API is currently not polyfilled for usage in IE11.
         // Use XMLHttpRequest instead in that case.
         fetch(QUERY_URL + this.searchKey)
-            .then(response => {
+            .then((response) => {
                 // fetch isn't throwing an error if the request fails.
                 // Therefore we have to check the ok property.
+                // The thrown error will be caught on the catch() method
                 if (!response.ok) {
-                    this.error = response;
+                    throw Error(response);
+                } else {
+                    return response.json();
                 }
-                return response.json();
             })
-            .then(jsonResponse => {
+            .then((jsonResponse) => {
                 this.books = jsonResponse;
             })
-            .catch(error => {
+            .catch((error) => {
                 this.error = error;
                 this.books = undefined;
             });

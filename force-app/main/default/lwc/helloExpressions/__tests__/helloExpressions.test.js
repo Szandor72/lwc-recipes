@@ -16,7 +16,7 @@ describe('c-hello-expressions', () => {
         // can't use an attribute query selector.
         element.shadowRoot
             .querySelectorAll('lightning-input')
-            .forEach(input => {
+            .forEach((input) => {
                 if (firstName && input.name === 'firstName') {
                     input.value = firstName;
                     input.dispatchEvent(new CustomEvent('change'));
@@ -82,5 +82,15 @@ describe('c-hello-expressions', () => {
             const detailEl = element.shadowRoot.querySelector('p');
             expect(detailEl.textContent).toBe(`${PREFIX} PETER PAN`);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-hello-expressions', {
+            is: HelloExpressions
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

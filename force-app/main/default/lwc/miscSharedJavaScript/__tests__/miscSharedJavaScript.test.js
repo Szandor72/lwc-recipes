@@ -63,11 +63,10 @@ describe('c-misc-shared-java-script', () => {
         document.body.appendChild(element);
 
         // Select input fields for simulating user input
-        const lightningInputEls = element.shadowRoot.querySelectorAll(
-            'lightning-input'
-        );
+        const lightningInputEls =
+            element.shadowRoot.querySelectorAll('lightning-input');
 
-        lightningInputEls.forEach(el => {
+        lightningInputEls.forEach((el) => {
             if (el.label === 'Rate') {
                 el.value = RATE_CUSTOM;
             } else if (el.label === 'Principal') {
@@ -77,9 +76,8 @@ describe('c-misc-shared-java-script', () => {
         });
 
         // Select combobox for simulating user input
-        const lightningComboboxEl = element.shadowRoot.querySelector(
-            'lightning-combobox'
-        );
+        const lightningComboboxEl =
+            element.shadowRoot.querySelector('lightning-combobox');
         lightningComboboxEl.value = TERM_CUSTOM;
         lightningComboboxEl.dispatchEvent(new CustomEvent('change'));
 
@@ -99,5 +97,15 @@ describe('c-misc-shared-java-script', () => {
                 RATE_CUSTOM
             );
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-misc-shared-java-script', {
+            is: MiscSharedJavaScript
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

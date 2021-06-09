@@ -25,7 +25,7 @@ describe('c-libs-d3', () => {
     // timing when the platformResourceLoader promises.
     function flushPromises() {
         // eslint-disable-next-line no-undef
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise((resolve) => setImmediate(resolve));
     }
 
     it('contains a svg element for D3', () => {
@@ -87,5 +87,15 @@ describe('c-libs-d3', () => {
             expect(handler.mock.calls[0][0].detail.title).toBe(TOAST_MESSAGE);
             expect(handler.mock.calls[0][0].detail.variant).toBe(TOAST_VARIANT);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-libs-d3', {
+            is: LibsD3
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

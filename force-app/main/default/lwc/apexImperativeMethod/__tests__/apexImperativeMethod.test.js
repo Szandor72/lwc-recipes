@@ -57,7 +57,7 @@ describe('c-apex-imperative-method', () => {
     // timing when calling imperative Apex.
     function flushPromises() {
         // eslint-disable-next-line no-undef
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise((resolve) => setImmediate(resolve));
     }
 
     it('renders two contacts returned from imperative Apex call', () => {
@@ -80,9 +80,8 @@ describe('c-apex-imperative-method', () => {
         // the test if the promise ends in the rejected state.
         return flushPromises().then(() => {
             // Select div for validating conditionally changed text content
-            const detailEls = element.shadowRoot.querySelectorAll(
-                'p:not([class])'
-            );
+            const detailEls =
+                element.shadowRoot.querySelectorAll('p:not([class])');
             expect(detailEls.length).toBe(APEX_CONTACTS_SUCCESS.length);
             expect(detailEls[0].textContent).toBe(
                 APEX_CONTACTS_SUCCESS[0].Name
@@ -112,10 +111,43 @@ describe('c-apex-imperative-method', () => {
         // for the Promise chain to complete before ending the test and fail
         // the test if the promise ends in the rejected state.
         return flushPromises().then(() => {
-            const errorPanelEl = element.shadowRoot.querySelector(
-                'c-error-panel'
-            );
+            const errorPanelEl =
+                element.shadowRoot.querySelector('c-error-panel');
             expect(errorPanelEl).not.toBeNull();
         });
+    });
+
+    it('is accessible when data is returned', () => {
+        // Assign mock value for resolved Apex promise
+        getContactList.mockResolvedValue(APEX_CONTACTS_SUCCESS);
+
+        // Create initial element
+        const element = createElement('c-apex-imperative-method', {
+            is: ApexImperativeMethod
+        });
+        document.body.appendChild(element);
+
+        // Select button for executing Apex call
+        const buttonEl = element.shadowRoot.querySelector('lightning-button');
+        buttonEl.click();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Assign mock value for rejected Apex promise
+        getContactList.mockRejectedValue(APEX_CONTACTS_ERROR);
+
+        // Create initial element
+        const element = createElement('c-apex-imperative-method', {
+            is: ApexImperativeMethod
+        });
+        document.body.appendChild(element);
+
+        // Select button for executing Apex call
+        const buttonEl = element.shadowRoot.querySelector('lightning-button');
+        buttonEl.click();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

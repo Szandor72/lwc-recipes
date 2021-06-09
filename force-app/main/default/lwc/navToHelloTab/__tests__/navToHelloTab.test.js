@@ -18,9 +18,8 @@ describe('c-nav-to-hello-tab', () => {
 
         return Promise.resolve().then(() => {
             // get handle to button and fire click event
-            const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button'
-            );
+            const buttonEl =
+                element.shadowRoot.querySelector('lightning-button');
             buttonEl.click();
 
             const { pageReference } = getNavigateCalledWith();
@@ -29,5 +28,15 @@ describe('c-nav-to-hello-tab', () => {
             expect(pageReference.type).toBe(NAV_TYPE);
             expect(pageReference.attributes.apiName).toBe(NAV_API_NAME);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-nav-to-hello-tab', {
+            is: NavToHelloTab
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

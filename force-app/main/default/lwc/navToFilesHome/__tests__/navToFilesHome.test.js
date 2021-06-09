@@ -23,9 +23,8 @@ describe('c-nav-to-files-home', () => {
         // ending the test and fail the test if the promise rejects.
         return Promise.resolve().then(() => {
             // Get handle to button and fire click event
-            const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button'
-            );
+            const buttonEl =
+                element.shadowRoot.querySelector('lightning-button');
             buttonEl.click();
 
             const { pageReference } = getNavigateCalledWith();
@@ -37,5 +36,15 @@ describe('c-nav-to-files-home', () => {
             );
             expect(pageReference.attributes.actionName).toBe(NAV_ACTION_NAME);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-nav-to-files-home', {
+            is: NavToFilesHome
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

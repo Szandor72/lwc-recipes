@@ -171,11 +171,42 @@ describe('c-apex-wire-method-with-complex-params', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible when data returned', () => {
+        // Create initial element
+        const element = createElement(
+            'c-apex-wire-method-with-complex-params',
+            {
+                is: ApexWireMethodWithComplexParams
+            }
+        );
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        checkApexTypesAdapter.emit(mockCheckApexTypes);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error returned', () => {
+        // Create initial element
+        const element = createElement(
+            'c-apex-wire-method-with-complex-params',
+            {
+                is: ApexWireMethodWithComplexParams
+            }
+        );
+        document.body.appendChild(element);
+
+        // Simulate an Apex error
+        checkApexTypesAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

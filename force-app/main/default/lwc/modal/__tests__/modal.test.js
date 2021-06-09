@@ -88,9 +88,8 @@ describe('c-modal', () => {
         return Promise.resolve()
             .then(() => {
                 // Query modal container div element
-                const modalContainerElementShow = element.shadowRoot.querySelector(
-                    '.slds-modal__container'
-                );
+                const modalContainerElementShow =
+                    element.shadowRoot.querySelector('.slds-modal__container');
 
                 // validate we successfully found the modal container DOM element
                 expect(modalContainerElementShow.tagName).toBe('DIV');
@@ -100,12 +99,31 @@ describe('c-modal', () => {
             })
             .then(() => {
                 // Query modal container div element
-                const modalContainerElementHide = element.shadowRoot.querySelector(
-                    '.slds-modal__container'
-                );
+                const modalContainerElementHide =
+                    element.shadowRoot.querySelector('.slds-modal__container');
 
                 // validate we successfully removed the modal from the DOM
                 expect(modalContainerElementHide).toBeNull();
             });
     });
+
+    it('is accessible when modal shown and public header property is set', () => {
+        const HEADER = 'The modal header';
+
+        // Create initial element
+        const element = createElement('c-modal', {
+            is: Modal
+        });
+        element.header = HEADER;
+        element.show();
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    /**
+     * It's not currently possible to pass HTML into a slot
+     * on component creation (createElement), so omitting this use case.
+     */
+    // it('is accessible when modal shown and it no public header property is set', () => {});
 });

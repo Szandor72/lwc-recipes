@@ -25,7 +25,7 @@ describe('c-hello-iterator', () => {
         // Verify displayed list
         const contacts = Array.from(
             element.shadowRoot.querySelectorAll('li')
-        ).map(li => li.textContent);
+        ).map((li) => li.textContent);
         expect(contacts).toEqual(EXPECTED);
     });
 
@@ -47,5 +47,15 @@ describe('c-hello-iterator', () => {
         ).toBe('DIV');
         // Verify no other divs
         expect(element.shadowRoot.querySelectorAll('li > div')).toHaveLength(2);
+    });
+
+    it('is accessible on initialization', () => {
+        const element = createElement('c-hello-iterator', {
+            is: HelloIterator
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

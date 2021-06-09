@@ -36,9 +36,8 @@ describe('c-lds', () => {
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
                 // Select elements for validation
-                const buttonEl = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
+                const buttonEl =
+                    element.shadowRoot.querySelector('lightning-button');
                 expect(buttonEl).not.toBeNull();
             });
         });
@@ -61,9 +60,8 @@ describe('c-lds', () => {
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
                 // Select button to simulate user interaction
-                const buttonEl = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
+                const buttonEl =
+                    element.shadowRoot.querySelector('lightning-button');
                 buttonEl.click();
 
                 const { pageReference } = getNavigateCalledWith();
@@ -95,11 +93,20 @@ describe('c-lds', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-lds', {
+            is: Lds
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

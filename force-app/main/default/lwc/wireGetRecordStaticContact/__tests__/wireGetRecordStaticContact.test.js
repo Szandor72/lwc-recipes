@@ -21,7 +21,7 @@ describe('c-wire-get-record-static-contact', () => {
     // timing.
     function flushPromises() {
         // eslint-disable-next-line no-undef
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise((resolve) => setImmediate(resolve));
     }
 
     describe('getRecord @wire data', () => {
@@ -77,11 +77,36 @@ describe('c-wire-get-record-static-contact', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible when data is returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-record-dynamic-contact', {
+            is: WireGetRecordStaticContact
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getRecordAdapter.emit(mockGetRecord);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-record-dynamic-contact', {
+            is: WireGetRecordStaticContact
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getRecordAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

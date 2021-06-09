@@ -22,9 +22,8 @@ describe('c-nav-to-home', () => {
         // ending the test and fail the test if the promise rejects.
         return Promise.resolve().then(() => {
             // Get handle to button and fire click event
-            const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button'
-            );
+            const buttonEl =
+                element.shadowRoot.querySelector('lightning-button');
             buttonEl.click();
 
             const { pageReference } = getNavigateCalledWith();
@@ -33,5 +32,15 @@ describe('c-nav-to-home', () => {
             expect(pageReference.type).toBe(NAV_TYPE);
             expect(pageReference.attributes.pageName).toBe(NAV_PAGE);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-nav-to-home', {
+            is: NavToHome
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

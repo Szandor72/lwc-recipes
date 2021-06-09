@@ -33,14 +33,13 @@ describe('c-wire-get-picklist-values', () => {
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
                 // Select elements for validation
-                const checkboxEls = element.shadowRoot.querySelectorAll(
-                    'lightning-input'
-                );
+                const checkboxEls =
+                    element.shadowRoot.querySelectorAll('lightning-input');
                 expect(checkboxEls.length).toBe(
                     mockGetPicklistValues.values.length
                 );
 
-                checkboxEls.forEach(checkboxEl => {
+                checkboxEls.forEach((checkboxEl) => {
                     expect(checkboxEl.type).toBe('checkbox');
                 });
             });
@@ -62,11 +61,36 @@ describe('c-wire-get-picklist-values', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible when picklist values are returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-picklist-values', {
+            is: WireGetPicklistValues
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getPicklistValuesAdapter.emit(mockGetPicklistValues);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-picklist-values', {
+            is: WireGetPicklistValues
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getPicklistValuesAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

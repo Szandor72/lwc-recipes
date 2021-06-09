@@ -54,7 +54,7 @@ describe('c-apex-imperative-method-with-complex-params', () => {
     // timing when calling imperative Apex.
     function flushPromises() {
         // eslint-disable-next-line no-undef
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise((resolve) => setImmediate(resolve));
     }
 
     it('passes the user input to the Apex method correctly', () => {
@@ -176,10 +176,39 @@ describe('c-apex-imperative-method-with-complex-params', () => {
         // for the Promise chain to complete before ending the test and fail
         // the test if the promise ends in the rejected state.
         return flushPromises().then(() => {
-            const errorPanelEl = element.shadowRoot.querySelector(
-                'c-error-panel'
-            );
+            const errorPanelEl =
+                element.shadowRoot.querySelector('c-error-panel');
             expect(errorPanelEl).not.toBeNull();
         });
+    });
+
+    it('is accessible on initialization', () => {
+        const element = createElement(
+            'c-apex-imperative-method-with-complex-params',
+            {
+                is: ApexImperativeMethodWithComplexParams
+            }
+        );
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error returned', () => {
+        // Assing mock value for rejected Apex promise
+        checkApexTypes.mockRejectedValue(APEX_ERROR);
+
+        // Create initial element
+        const element = createElement('c-apex-imperative-method-with-params', {
+            is: ApexImperativeMethodWithComplexParams
+        });
+        document.body.appendChild(element);
+
+        // Select button for executing Apex call
+        const buttonEl = element.shadowRoot.querySelector('lightning-button');
+        buttonEl.click();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

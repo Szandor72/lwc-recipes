@@ -24,9 +24,8 @@ describe('c-nav-to-list-view', () => {
         // ending the test and fail the test if the promise rejects.
         return Promise.resolve().then(() => {
             // Get handle to button and fire click event
-            const buttonEl = element.shadowRoot.querySelector(
-                'lightning-button'
-            );
+            const buttonEl =
+                element.shadowRoot.querySelector('lightning-button');
             buttonEl.click();
 
             const { pageReference } = getNavigateCalledWith();
@@ -39,5 +38,15 @@ describe('c-nav-to-list-view', () => {
             expect(pageReference.attributes.actionName).toBe(NAV_ACTION_NAME);
             expect(pageReference.state.filterName).toBe(NAV_FILTER_NAME);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-nav-to-list-view', {
+            is: NavToListView
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

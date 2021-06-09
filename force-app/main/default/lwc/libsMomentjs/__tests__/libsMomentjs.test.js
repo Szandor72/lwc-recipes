@@ -49,7 +49,7 @@ describe('c-libs-momentjs', () => {
     // timing when the platformResourceLoader promises.
     function flushPromises() {
         // eslint-disable-next-line no-undef
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise((resolve) => setImmediate(resolve));
     }
 
     it('populates the disabled lightning-input fields with moment.js data based on user input', () => {
@@ -79,9 +79,9 @@ describe('c-libs-momentjs', () => {
             const values = Array.from(
                 element.shadowRoot.querySelectorAll('lightning-input')
             )
-                .filter(input => input.disabled)
+                .filter((input) => input.disabled)
                 .splice(0, 2)
-                .map(input => input.value);
+                .map((input) => input.value);
             expect(values).toEqual(OUTPUT_EXPECTED);
         });
     });
@@ -100,10 +100,35 @@ describe('c-libs-momentjs', () => {
         // will automatically wait for the Promise chain to complete before
         // ending the test and fail the test if the promise rejects.
         return flushPromises().then(() => {
-            const errorPanelEl = element.shadowRoot.querySelector(
-                'c-error-panel'
-            );
+            const errorPanelEl =
+                element.shadowRoot.querySelector('c-error-panel');
             expect(errorPanelEl).not.toBeNull();
         });
+    });
+
+    it('is accessible when library is loaded', () => {
+        // Enforcing to load the static resource via the overwritten function.
+        mockScriptSuccess = true;
+
+        const element = createElement('c-libs-momentjs', {
+            is: LibsMomentjs
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when there is an error loading library', () => {
+        // Enforcing to fail loading the static resource via the overwritten function.
+        mockScriptSuccess = false;
+
+        // Create initial element
+        const element = createElement('c-libs-momentjs', {
+            is: LibsMomentjs
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

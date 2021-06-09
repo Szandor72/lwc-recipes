@@ -57,11 +57,36 @@ describe('c-wire-list-view', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible when list view is returned', () => {
+        // Create element
+        const element = createElement('c-wire-list-view', {
+            is: WireListView
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getListUiAdapter.emit(mockGetListUi);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create element
+        const element = createElement('c-wire-list-view', {
+            is: WireListView
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getListUiAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

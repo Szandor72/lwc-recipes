@@ -35,9 +35,8 @@ describe('c-api-property', () => {
         document.body.appendChild(element);
 
         // Select input field for simulating user input
-        const lightningInputEl = element.shadowRoot.querySelector(
-            'lightning-input'
-        );
+        const lightningInputEl =
+            element.shadowRoot.querySelector('lightning-input');
         lightningInputEl.value = PERCENTAGE_CUSTOM;
         lightningInputEl.dispatchEvent(new CustomEvent('change'));
 
@@ -51,5 +50,15 @@ describe('c-api-property', () => {
             // Query newly set public property on chart-bar component
             expect(chartBarEl.percentage).toBe(PERCENTAGE_CUSTOM);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-api-property', {
+            is: ApiProperty
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

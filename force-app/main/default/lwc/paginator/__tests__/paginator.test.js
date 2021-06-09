@@ -25,7 +25,7 @@ describe('c-paginator', () => {
 
         element.shadowRoot
             .querySelectorAll('lightning-button')
-            .forEach(button => {
+            .forEach((button) => {
                 button.click();
             });
 
@@ -37,5 +37,15 @@ describe('c-paginator', () => {
             expect(handlerPrevious.mock.calls.length).toBe(1);
             expect(handlerNext.mock.calls.length).toBe(1);
         });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-paginator', {
+            is: Paginator
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

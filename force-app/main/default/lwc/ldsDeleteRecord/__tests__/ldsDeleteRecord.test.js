@@ -99,9 +99,8 @@ describe('c-lds-delete-record', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
@@ -136,5 +135,31 @@ describe('c-lds-delete-record', () => {
                     mockGetAccountList[0].Id
                 );
             });
+    });
+
+    it('is accessible when data is returned', () => {
+        // Create initial element
+        const element = createElement('c-lds-delete-record', {
+            is: LdsDeleteRecord
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getAccountListAdapter.emit(mockGetAccountList);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create initial element
+        const element = createElement('c-lds-delete-record', {
+            is: LdsDeleteRecord
+        });
+        document.body.appendChild(element);
+
+        // Emit error from @wire
+        getAccountListAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

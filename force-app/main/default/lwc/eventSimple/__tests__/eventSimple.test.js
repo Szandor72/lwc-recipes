@@ -17,12 +17,11 @@ describe('c-event-simple', () => {
         document.body.appendChild(element);
 
         const paginatorEl = element.shadowRoot.querySelector('c-paginator');
-        const buttonEls = paginatorEl.shadowRoot.querySelectorAll(
-            'lightning-button'
-        );
+        const buttonEls =
+            paginatorEl.shadowRoot.querySelectorAll('lightning-button');
 
         // First click "Next", so that the page property increments to 2
-        buttonEls.forEach(buttonEl => {
+        buttonEls.forEach((buttonEl) => {
             if (buttonEl.label === 'Next') {
                 buttonEl.click();
             }
@@ -39,7 +38,7 @@ describe('c-event-simple', () => {
                 expect(pageEl.textContent).toBe('Page 2');
 
                 // Now click "Previous", so that the page property decrements to 1
-                buttonEls.forEach(buttonEl => {
+                buttonEls.forEach((buttonEl) => {
                     if (buttonEl.label === 'Previous') {
                         buttonEl.click();
                     }
@@ -50,7 +49,7 @@ describe('c-event-simple', () => {
                 expect(pageEl.textContent).toBe('Page 1');
 
                 // Decrement again
-                buttonEls.forEach(buttonEl => {
+                buttonEls.forEach((buttonEl) => {
                     if (buttonEl.label === 'Previous') {
                         buttonEl.click();
                     }
@@ -60,5 +59,15 @@ describe('c-event-simple', () => {
                 // Verify that property is not decremented, and the initial value stays on 1.
                 expect(pageEl.textContent).toBe('Page 1');
             });
+    });
+
+    it('is accessible', () => {
+        const element = createElement('c-event-simple', {
+            is: EventSimple
+        });
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });

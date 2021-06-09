@@ -67,11 +67,36 @@ describe('c-wire-get-record-dynamic-contact', () => {
             // will automatically wait for the Promise chain to complete before
             // ending the test and fail the test if the promise rejects.
             return Promise.resolve().then(() => {
-                const errorPanelEl = element.shadowRoot.querySelector(
-                    'c-error-panel'
-                );
+                const errorPanelEl =
+                    element.shadowRoot.querySelector('c-error-panel');
                 expect(errorPanelEl).not.toBeNull();
             });
         });
+    });
+
+    it('is accessible when data is returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-record-dynamic-contact', {
+            is: WireGetRecordDynamicContact
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getRecordAdapter.emit(mockGetRecord);
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
+    });
+
+    it('is accessible when error is returned', () => {
+        // Create element
+        const element = createElement('c-wire-get-record-dynamic-contact', {
+            is: WireGetRecordDynamicContact
+        });
+        document.body.appendChild(element);
+
+        // Emit data from @wire
+        getRecordAdapter.error();
+
+        return Promise.resolve().then(() => expect(element).toBeAccessible());
     });
 });
